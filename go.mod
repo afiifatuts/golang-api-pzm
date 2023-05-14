@@ -3,8 +3,9 @@ module golang-api-pzm
 go 1.20
 
 require (
-	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/go-playground/validator/v10 v10.13.0
+	github.com/julienschmidt/httprouter v1.3.0
+	github.com/lib/pq v1.10.9
 )
 
 require (
@@ -14,5 +15,4 @@ require (
 	golang.org/x/crypto v0.7.0 // indirect
 	golang.org/x/sys v0.6.0 // indirect
 	golang.org/x/text v0.8.0 // indirect
-	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 )

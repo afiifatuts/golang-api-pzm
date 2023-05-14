@@ -1,1 +1,38 @@
 package main
+
+import (
+	"golang-api-pzm/app"
+	"golang-api-pzm/controller"
+	"golang-api-pzm/helper"
+	"golang-api-pzm/repository"
+	"golang-api-pzm/service"
+	"net/http"
+
+	"github.com/go-playground/validator/v10"
+	"github.com/julienschmidt/httprouter"
+	_ "github.com/lib/pq"
+)
+
+func main() {
+	db := app.ConnectDB()
+	validate := validator.New()
+	categoryRepository := repository.NewCategoryRepository()
+	categoryService := service.NewCategoryService(categoryRepository, db, validate)
+	categoryController := controller.NewCategoryController(categoryService)
+
+	router := httprouter.New()
+
+	router.GET("/api/categories", categoryController.FindAll)
+	router.GET("/api/categories/:categoryId", categoryController.FindById)
+	router.POST("/api/categories", categoryController.Create)
+	router.PUT("/api/categories/:categoryId", categoryController.Update)
+	router.DELETE("/api/categories/:categoryId", categoryController.Delete)
+
+	server := http.Server{
+		Addr:    "localhost:3000",
+		Handler: router,
+	}
+
+	err := server.ListenAndServe()
+	helper.PanicIfError(err)
+}

@@ -6,23 +6,29 @@ import (
 	"errors"
 	"golang-api-pzm/helper"
 	"golang-api-pzm/model/domain"
+
+	_ "github.com/lib/pq"
 )
 
 type CategoryRepositoryImpl struct {
 }
 
+func NewCategoryRepository() CategoryRepository {
+	return &CategoryRepositoryImpl{}
+}
+
 func (repository *CategoryRepositoryImpl) Save(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category {
 	SQL := "insert into categories(id, name) values($1,$2);"
-	result, err := tx.ExecContext(ctx, SQL, category.Id, category.Name)
+	_, err := tx.ExecContext(ctx, SQL, category.Id, category.Name)
 	//dari helper
 	helper.PanicIfError(err)
 
-	id, err := result.LastInsertId()
-	if err != nil {
-		panic(err)
-	}
+	// id, err := result.LastInsertId()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	category.Id = int(id)
+	// category.Id = int(id)
 	return category
 }
 func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, category domain.Category) domain.Category {
@@ -33,7 +39,7 @@ func (repository *CategoryRepositoryImpl) Update(ctx context.Context, tx *sql.Tx
 	return category
 }
 func (repository *CategoryRepositoryImpl) Delete(ctx context.Context, tx *sql.Tx, category domain.Category) {
-	SQL := "Delete categories where id = $1;"
+	SQL := "Delete from categories where id = $1;"
 	_, err := tx.ExecContext(ctx, SQL, category.Id)
 	helper.PanicIfError(err)
 }
