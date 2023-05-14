@@ -1,0 +1,52 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Category RESFUL API",
+        "description": "API Spec For Category RESFUL API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000/api"
+        }
+    ],
+    "paths": {
+        "/categories": {
+            "get": {
+                "description:": "List all categories",
+                "responses": {
+                    "200": {
+                        "description:": "Succes get all categories",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number"
+                                        },
+                                        "status": "string"
+                                    },
+                                    "data": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
