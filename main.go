@@ -5,6 +5,7 @@ import (
 	"golang-api-pzm/controller"
 	"golang-api-pzm/exception"
 	"golang-api-pzm/helper"
+	"golang-api-pzm/middleware"
 	"golang-api-pzm/repository"
 	"golang-api-pzm/service"
 	"net/http"
@@ -33,7 +34,7 @@ func main() {
 
 	server := http.Server{
 		Addr:    "localhost:3000",
-		Handler: router,
+		Handler: middleware.NewAuthMiddleware(router),
 	}
 
 	err := server.ListenAndServe()
