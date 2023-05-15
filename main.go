@@ -3,6 +3,7 @@ package main
 import (
 	"golang-api-pzm/app"
 	"golang-api-pzm/controller"
+	"golang-api-pzm/exception"
 	"golang-api-pzm/helper"
 	"golang-api-pzm/repository"
 	"golang-api-pzm/service"
@@ -27,6 +28,8 @@ func main() {
 	router.POST("/api/categories", categoryController.Create)
 	router.PUT("/api/categories/:categoryId", categoryController.Update)
 	router.DELETE("/api/categories/:categoryId", categoryController.Delete)
+
+	router.PanicHandler = exception.ErrorHandler
 
 	server := http.Server{
 		Addr:    "localhost:3000",

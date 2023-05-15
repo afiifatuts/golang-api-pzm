@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"database/sql"
+	"golang-api-pzm/exception"
 	"golang-api-pzm/helper"
 	"golang-api-pzm/model/domain"
 	"golang-api-pzm/model/web"
@@ -27,7 +28,7 @@ func NewCategoryService(categoryRepository repository.CategoryRepository, DB *sq
 		DB:                 DB,
 		Validate:           validate,
 	}
-} 
+}
 
 func (service *CategoryServiceImpl) Create(ctx context.Context, request web.CategoryCreateRequest) web.CategoryResponse {
 	err := service.Validate.Struct(request)
@@ -64,7 +65,10 @@ func (service *CategoryServiceImpl) Update(ctx context.Context, request web.Cate
 	//divalidasi apakah id nya ada atau tidak
 
 	category, err := service.CategoryRepository.FindById(ctx, tx, request.Id)
-	helper.PanicIfError(err)
+	//menggunakan exeption func not found
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	//mengubah nama category
 	category.Name = request.Name
@@ -86,7 +90,10 @@ func (service *CategoryServiceImpl) Delete(ctx context.Context, categoryId int) 
 	//divalidasi apakah id nya ada atau tidak
 
 	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
-	helper.PanicIfError(err)
+	//menggunakan exeption func not found
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	service.CategoryRepository.Delete(ctx, tx, category)
 }
@@ -101,7 +108,10 @@ func (service *CategoryServiceImpl) FindById(ctx context.Context, categoryId int
 	//divalidasi apakah id nya ada atau tidak
 
 	category, err := service.CategoryRepository.FindById(ctx, tx, categoryId)
-	helper.PanicIfError(err)
+	//menggunakan exeption func not found
+	if err != nil {
+		panic(exception.NewNotFoundError(err.Error()))
+	}
 
 	return helper.ToCategoryResponse(category)
 }
